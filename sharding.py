@@ -2,6 +2,7 @@ import mysql.connector
 import getpass
 import pandas as pd
 import random 
+
 user = input("Enter username: ")
 password = getpass.getpass(prompt="Enter password: ", stream=None)
 
