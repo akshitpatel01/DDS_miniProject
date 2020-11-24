@@ -27,6 +27,8 @@ def shard(user, password, non, shardingType, sql, desField, rangesize):
         # sharding approach 1: Enumeration Algorithm
         dsf=int(sqlsplit[i].strip())
         dsf=dsf%non
+        if dsf==0:
+            dsf=non
         dbname="node"+str(dsf)
     elif shardingType==2:
         # sharding approach 2: Range partition Algorithm
@@ -34,11 +36,15 @@ def shard(user, password, non, shardingType, sql, desField, rangesize):
         dsf=dsf/rangesize
         dsf=int(dsf)
         dsf=dsf%non
+        if dsf==0:
+            dsf=non
         dbname="node"+str(dsf)
     else:
         # sharding approach 3: Date partition Algorithm
         ts=int(time.time())
         ts=ts%non
+        if ts==0:
+            ts=non
         dbname="node"+str(ts)
     try:
         dbcursor.execute("USE "+dbname)

@@ -1,0 +1,2 @@
+Sharding:
+insert into film1 (id,Year,Length,Title,Subject,Popularity,Awards) values (13,2000,115,'GG','Drama',100,'YES')
