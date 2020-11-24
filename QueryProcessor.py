@@ -3,7 +3,7 @@ from mysql.connector import FieldType
 
 
 class QuerryProcessor:
-    #Memberr Variable Declaration
+    #Member Variable Declaration
     host="localhost"
     user="akshit"
     password="1234"
@@ -240,8 +240,8 @@ class QuerryProcessor:
                     newQuery+='temp2.'+split[1] + ' '
             else:
                 newQuery += x
-        print(table1)
-        print(table2)
+        #print(table1)
+        #print(table2)
         newQuery = query.replace(table1,'temp1').replace(table2,'temp2')
         #newQuery = query.replace(table2,'temp2')
 
@@ -340,11 +340,16 @@ class QuerryProcessor:
         mydb.close()
 
 
+    def __init__(self):
+        host="localhost"
+        user="akshit"
+        password="1234"
+        database=''
+        allDatabases = ['node1','node2','node3','node4']
 
 
-
-    def main(self):
-        query = input("Enter query without joins \n")
+    def main(self,query):
+        #query = input("Enter query \n")
         querySplit = query.split(' ')
         if 'inner' in querySplit and 'join' in querySplit:
             self.semijoinQuery(query)
