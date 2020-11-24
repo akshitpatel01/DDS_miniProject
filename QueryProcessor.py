@@ -5,8 +5,8 @@ from mysql.connector import FieldType
 class QuerryProcessor:
     #Member Variable Declaration
     host="localhost"
-    user="akshit"
-    password="1234"
+    user="dds"
+    password="proj@dds"
     database=''
     allDatabases = ['node1','node2','node3','node4']
 
