@@ -1,2 +1,6 @@
+Create:
+create table film1 (id int, Year int, Length int, Title varchar(500), Subject varchar(100), Popularity int, Awards varchar(50), primary key (id))
+create table film2 (id int, Actor vahrchar(500), Actress varchar(500), Director varchar(500), primary key (id))
+
 Sharding:
 insert into film1 (id,Year,Length,Title,Subject,Popularity,Awards) values (13,2000,115,'GG','Drama',100,'YES')
