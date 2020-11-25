@@ -26,9 +26,6 @@ class QuerryProcessor:
         try:
             mycursor = mydb.cursor()
             mycursor.execute(query)  
-            #querySplit = query.split(' ')
-            #if querySplit[0]=='update' or querySplit[0]=='UPDATE' or querySplit[0]=='delete' or querySplit[0]=='DELETE':
-            #print('Rows Affected: %d' % (mycursor.rowcount))
             
             if toPrint:
                 if mycursor.with_rows:
@@ -245,7 +242,7 @@ class QuerryProcessor:
         newQuery = query.replace(table1,'temp1').replace(table2,'temp2')
         #newQuery = query.replace(table2,'temp2')
 
-        print(newQuery)
+        #print(newQuery)
         # newQuery[ind1] = 'temp1'
         # newQuery[ind2] = 'temp2'
 
@@ -340,19 +337,35 @@ class QuerryProcessor:
         mydb.close()
 
 
-    def __init__(self):
-        host="localhost"
-        user="akshit"
-        password="1234"
-        database=''
-        allDatabases = ['node1','node2','node3','node4']
+    def __init__(self, listDatabases):
+        #pass
+        self.host="localhost"
+        self.user="akshit"
+        self.password="1234"
+        self.database=''
+        tmplist = []
+        if len(listDatabases)>0:
+            for i in listDatabases:
+                tmplist.append('node'+i)
+        else:
+            tmplist = ['node1','node2','node3','node4']
+        self.allDatabases = tmplist
+        #print(self.allDatabases)
 
 
     def main(self,query):
         #query = input("Enter query \n")
         querySplit = query.split(' ')
         if 'inner' in querySplit and 'join' in querySplit:
-            self.semijoinQuery(query)
+            print('Join query detected')
+            sw = int(input('1. Direct Join \n2.Semi-Join\n '))
+            if sw==1:
+                self.joinQuery(query)
+            elif sw==2:
+                self.semijoinQuery(query)
+            else:
+                print('Invalid option')
+                return
         elif 'order' in querySplit and 'by' in querySplit:
             self.aggregateQuery(query)
         else:
