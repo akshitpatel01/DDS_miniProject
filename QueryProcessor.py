@@ -337,11 +337,11 @@ class QuerryProcessor:
         mydb.close()
 
 
-    def __init__(self, listDatabases):
+    def __init__(self, listDatabases,user,password):
         #pass
         self.host="localhost"
-        self.user="akshit"
-        self.password="1234"
+        self.user=user
+        self.password=password
         self.database=''
         tmplist = []
         if len(listDatabases)>0:

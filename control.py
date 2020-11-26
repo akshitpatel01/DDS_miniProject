@@ -19,14 +19,14 @@ while 1:
             rangeSize = 100
         shard(username,password,numNodes,sharding_algo_number,query,desField,rangeSize) #Call to sharding module
     elif sw==2:
+        username = input('Enter username: ')
+        password = input('Enter password: ')
         query = input('Enter query: ')
         querySplit = query.split('-')
-        #print(querySplit)
         listDatabases = []
         if len(querySplit) > 1:
             listDatabases = querySplit[1].split(',')
-        #print(listDatabases)
-        qp = QuerryProcessor(listDatabases) #Call to query processor
+        qp = QuerryProcessor(listDatabases,username,password) #Call to query processor
         qp.main(querySplit[0])
     elif sw==3:
         break
