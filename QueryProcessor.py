@@ -253,10 +253,19 @@ class QuerryProcessor:
 
 
     def semijoinQuery(self,query):
+        tempdict = {
+            '<':'>',
+            '>':'<',
+            '=':'=',
+            '<=':'>=',
+            '>=':'<='
+        }
         table1 = ''
         table2 = ''
         ind1 = 0
         ind2 = 0
+        indOperator = 0
+        flag=1
         attributes = []
         querySplit = query.split(' ')
         for i in querySplit:
@@ -277,6 +286,12 @@ class QuerryProcessor:
             split = x.split('.')
             if len(split)>1 and split[0]==table1:
                 attributes.append(split[1])
+                flag=0
+            if flag==1:
+                indOperator+=1
+        indOperator+=1
+        operator = tempdict[querySplit[indOperator]]
+        print(operator)
         #print (attributes)
         resultT = []
         tmp = []
@@ -292,25 +307,18 @@ class QuerryProcessor:
                 
                 if mycursor.with_rows:
                     tmp = mycursor.fetchall()     
-                    resultT += tmp
+                    resultT = tmp
                     
             except:
                 #pass
                 print('Query failed on ' + x + '\n')  
-            #print(resultT)
+            print(resultT)
             result = list(resultT)
             incomingTuplesAll = []
             incomingTuples = []
             for tupl in resultT:
                 tup=''
                 tup = ''.join(str(tupl))
-                # str1=''
-                # str1 = ''.join(str(tup))
-                # #tup = ''.join(tupl)
-                # print(type(tup))
-                # print(tup)
-                # print(type(str1))
-                
                 tup = tup.split(',')[0].split('(')[1]
                 #print(tup)
                 for y in self.allDatabases:
@@ -318,7 +326,7 @@ class QuerryProcessor:
                     mydb2 = self.connectToDatabase(y)
                     try:
                         mycursor2 = mydb2.cursor()
-                        mycursor2.execute('select * from '+ table2 +' where ' + attributes[0] + ' = ' + tup)
+                        mycursor2.execute('select * from '+ table2 +' where ' + attributes[0] + ' '+ operator+' ' + tup)
                         if mycursor2.with_rows:
                             incomingTuples = mycursor2.fetchall()
                             if tableDescription == []:
