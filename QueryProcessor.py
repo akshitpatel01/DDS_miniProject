@@ -196,6 +196,34 @@ class QuerryProcessor:
         #self.executeQuery('select * from temp',True)
         self.executeQuery('node1','drop table temp',False)
 
+    def allquery(self,query):
+        table1 = ''
+        ind1 = 0
+        querySplit = query.split(' ')
+        for i in querySplit:
+            if i=='FROM' or i=='from':
+                break
+            ind1+=1
+        ind1+=1
+        table1 = querySplit[ind1]
+
+        entireTable1,descTable1 = self.executeQueryAllNodesRet('select * from '+table1)
+        self.createInsertTempTable('temp1', 'node1',entireTable1, descTable1)
+        newQuery = ''
+
+        ind=0
+        for x in querySplit:
+            split = x.split('.')
+            if len(split)>1:
+                if split[0]==table1:
+                    newQuery+='temp1.'+split[1] + ' '
+            else:
+                newQuery += x
+        newQuery = query.replace(table1,'temp1')
+        self.executeQuery('node1',newQuery,True)
+        self.executeQuery('node1','drop table temp1',False)
+
+
     def joinQuery(self,query):
         table1 = ''
         table2 = ''
@@ -312,7 +340,7 @@ class QuerryProcessor:
             except:
                 #pass
                 print('Query failed on ' + x + '\n')  
-            print(resultT)
+            #print(resultT)
             result = list(resultT)
             incomingTuplesAll = []
             incomingTuples = []
@@ -374,10 +402,12 @@ class QuerryProcessor:
             else:
                 print('Invalid option')
                 return
-        elif 'order' in querySplit and 'by' in querySplit:
-            self.aggregateQuery(query)
-        else:
-            self.executeQueryAllNodes(query)
+        # elif 'order' in querySplit and 'by' in querySplit:
+        #     self.aggregateQuery(query)
+        #else:
+        #    self.executeQueryAllNodes(query)
+        else:    
+            self.allquery(query)
 
 
 if __name__ == "__main__":
